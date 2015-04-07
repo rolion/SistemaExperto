@@ -73,7 +73,7 @@ public class NTupla extends aTablaVal {
             else if(listener!=null &&aux!=null){
                 listener.updateValList(t);
             }
-        }
+        }     
     }
     
     public Tupla exist(Tupla t){
