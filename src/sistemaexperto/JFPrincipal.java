@@ -5,28 +5,49 @@
  */
 package sistemaexperto;
 
-import java.awt.BorderLayout;
-import java.awt.LayoutManager;
+import java.awt.Component;
 import java.io.File;
-import java.util.ArrayList;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import sistemaexperto.Entidad.BC;
+import sistemaexperto.Entidad.Regla;
 import sistemaexperto.util.GV;
+import sistemaexperto.util.listenerBC;
 
 /**
  *
  * @author Lion
  */
-public class JFPrincipal extends javax.swing.JFrame {
+public class JFPrincipal extends javax.swing.JFrame implements listenerBC{
 
     /**
      * Creates new form JFPrincipal
      */
+    private JPRegla pRegla;
+    private JPVariables pVar;
+    private  Component selected;
+    private Regla seletedRegla;
+    private DefaultListModel dListModel;
     public JFPrincipal() {
         initComponents();
+        this.dListModel=new DefaultListModel();
+        this.jList1.setModel(dListModel);
+        this.jList1.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+               if (!e.getValueIsAdjusting()){
+                    seletedRegla =(Regla) ((JList)e.getSource())
+                            .getSelectedValue();
+                }
+            }
+        });
     }
 
     /**
@@ -39,18 +60,81 @@ public class JFPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser2 = new javax.swing.JFileChooser();
+        jPanel1 = new javax.swing.JPanel();
+        jBreglas = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jBVariables = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sistema Experto");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Regla"));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        jBreglas.setText("Nueva");
+        jBreglas.setMaximumSize(new java.awt.Dimension(75, 23));
+        jBreglas.setMinimumSize(new java.awt.Dimension(75, 23));
+        jBreglas.setPreferredSize(new java.awt.Dimension(75, 23));
+        jBreglas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBreglasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jBreglas);
+
+        jButton2.setText("Ver");
+        jButton2.setMaximumSize(new java.awt.Dimension(75, 23));
+        jButton2.setMinimumSize(new java.awt.Dimension(75, 23));
+        jButton2.setPreferredSize(new java.awt.Dimension(75, 23));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+
+        jBVariables.setText("Eliminar");
+        jBVariables.setToolTipText("");
+        jBVariables.setActionCommand("");
+        jBVariables.setMaximumSize(new java.awt.Dimension(75, 23));
+        jBVariables.setMinimumSize(new java.awt.Dimension(75, 23));
+        jBVariables.setName("ButtonEliminar"); // NOI18N
+        jBVariables.setPreferredSize(new java.awt.Dimension(75, 23));
+        jBVariables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBVariablesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jBVariables);
+
+        jScrollPane1.setViewportView(jList1);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Variables"));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
+        jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1);
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Nuevo Archivo");
+        jMenuItem3.setText("Nuevo");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem1.setText("Abrir Archivo");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -58,7 +142,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Abrir Archivo");
+        jMenuItem2.setText("Guardar");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -68,29 +152,30 @@ public class JFPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-
-        jMenuItem3.setText("Agregar Variables");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
-
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 643, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 419, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         pack();
@@ -110,19 +195,59 @@ public class JFPrincipal extends javax.swing.JFrame {
             GV.homeFile=f;
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private jFContenedor contenedor;
+    private void jBreglasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBreglasActionPerformed
         // TODO add your handling code here:
-        JPVariables pVar= new JPVariables();
-        //LayoutManager lm= this.getContentPane().getLayout();
-        this.getContentPane().add(pVar);
+        contenedor=new jFContenedor();
+        contenedor.setTitle("Nueva Regla");
+        this.pRegla=new JPRegla();
+        this.pRegla.setmListenerBc(this);
+        contenedor.getContentPane().add(this.pRegla);
+        contenedor.setLayout(new BoxLayout(contenedor.getContentPane(), BoxLayout.X_AXIS));
+        contenedor.pack();
+        contenedor.setVisible(true);
+    }//GEN-LAST:event_jBreglasActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(this.seletedRegla!=null){
+            contenedor=new jFContenedor();
+            contenedor.setTitle("Editar Regla");
+            this.pRegla=new JPRegla();
+            this.pRegla.setmListenerBc(this);
+            this.pRegla.setRegla(seletedRegla);
+            contenedor.getContentPane().add(this.pRegla);
+            contenedor.setLayout(new BoxLayout(contenedor.getContentPane(), BoxLayout.X_AXIS));
+            contenedor.pack();
+            contenedor.setVisible(true);
+        }else
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una regla");
         
-        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-        this.pack();
-        this.setVisible(true);
-        this.repaint();
-        //pVar.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.pVar=new JPVariables();
+        
+        this.contenedor= new jFContenedor();
+        this.contenedor.setTitle("Variables");
+        this.contenedor.getContentPane().add(this.pVar);
+        this.contenedor.setLayout(new BoxLayout(this.contenedor.getContentPane(), BoxLayout.Y_AXIS));
+        this.contenedor.pack();
+        this.contenedor.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jBVariablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBVariablesActionPerformed
+        // TODO add your handling code here:
+//        JButton b= (JButton)evt.getSource();
+//        System.out.println(b.getName());
+        if(this.seletedRegla!=null)
+        {
+           
+            this.dListModel.removeElement(this.seletedRegla);
+            this.jList1.updateUI();
+            GV.tableBC.getReglas().remove(this.seletedRegla);
+        }
+    }//GEN-LAST:event_jBVariablesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,12 +285,34 @@ public class JFPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBVariables;
+    private javax.swing.JButton jBreglas;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JFileChooser jFileChooser2;
+    private javax.swing.JList jList1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void addRegla(Regla regla) {
+        int nro=this.dListModel.getSize();
+        if(regla.getNombre()!=null && regla.getNombre().equals("")){
+            regla.setNombre("Regla"+nro);
+            this.dListModel.addElement(regla);
+            if(GV.tableBC==null)
+                GV.tableBC=new BC();
+            GV.tableBC.addRegla(regla);
+        }
+        
+        this.jList1.updateUI();
+    }
+
 }

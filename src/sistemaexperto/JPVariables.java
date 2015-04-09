@@ -56,7 +56,14 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
             }
         });
     }
-
+    private void cargarBase(){
+        if(GV.tablaVar!=null){
+            for (Tupla tupla : GV.tablaVar.getLista()) {
+                this.listmodelnombre.addElement(tupla);
+            }
+            updateValList(GV.tablaVar.getLista().get(0));
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -97,10 +104,12 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
+        jLNombre.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         jScrollPane3.setViewportView(jLNombre);
 
         jPanel1.add(jScrollPane3);
 
+        jLvalor.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         jScrollPane4.setViewportView(jLvalor);
 
         jPanel1.add(jScrollPane4);
@@ -129,6 +138,7 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
+        jRBnumerica.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         jRBnumerica.setText("Numerica");
         jRBnumerica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +147,7 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
         });
         jPanel5.add(jRBnumerica, java.awt.BorderLayout.CENTER);
 
+        jRBescalar.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         jRBescalar.setText("Escalar");
         jRBescalar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,6 +160,7 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jBeliminar.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         jBeliminar.setText("Eliminar");
         jBeliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,6 +169,7 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
         });
         jPanel4.add(jBeliminar, java.awt.BorderLayout.CENTER);
 
+        jBguardar.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         jBguardar.setText("Guardar");
         jBguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,7 +190,8 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
         jLabel3.setText("Nombre");
         jPanel10.add(jLabel3);
 
-        jTFnombre.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 11)); // NOI18N
+        jTFnombre.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
+        jTFnombre.setEnabled(false);
         jPanel10.add(jTFnombre);
 
         jPanel11.add(jPanel10);
@@ -190,6 +204,9 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
         jLabel5.setMinimumSize(new java.awt.Dimension(43, 14));
         jLabel5.setPreferredSize(new java.awt.Dimension(43, 14));
         jPanel6.add(jLabel5);
+
+        jTFvalor.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
+        jTFvalor.setEnabled(false);
         jPanel6.add(jTFvalor);
 
         jPanel11.add(jPanel6);
@@ -234,12 +251,19 @@ public class JPVariables extends javax.swing.JPanel implements listenerVariable{
         // TODO add your handling code here:
         jRBnumerica.setSelected(false);
         jTFvalor.setEnabled(true);
+        this.jTFnombre.setEnabled(true);
+        this.jTFnombre.setText("");
+        this.jTFvalor.setEnabled(true);
+        this.jTFvalor.setText("");
     }//GEN-LAST:event_jRBescalarActionPerformed
 
     private void jRBnumericaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBnumericaActionPerformed
         // TODO add your handling code here:
         jRBescalar.setSelected(false);
         jTFvalor.setEnabled(false);
+        this.jTFnombre.setEnabled(true);
+        this.jTFnombre.setText("");
+        this.jTFvalor.setText("");
     }//GEN-LAST:event_jRBnumericaActionPerformed
     
     private void jBguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBguardarActionPerformed

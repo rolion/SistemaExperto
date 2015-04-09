@@ -5,6 +5,8 @@
  */
 package sistemaexperto.Entidad;
 
+import sistemaexperto.util.GV;
+
 /**
  *
  * @author Lion
@@ -36,5 +38,18 @@ public class Hecho {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    @Override
+    public String toString() {
+         Tupla t=GV.tablaVar.getLista().get(getVar());
+         String hecho=GV.tablaVar.getLista().get(this.getVar()).getNombre() + " = ";
+        if(t.getVarlorI()>-1)
+            hecho=hecho+GV.tablaVal.getVal((int) getValor());
+        else
+            hecho=hecho+String.valueOf(getValor());
+        
+        return hecho ;
+    }
+    
     
 }
